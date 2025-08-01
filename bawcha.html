@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bark Verification CAPTCHA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+        
+        .captcha-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .dog-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ff9800;
+        }
+        
+        .visualizer {
+            width: 200px;
+            height: 100px;
+            margin: 20px auto;
+            background: #f0f0f0;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sound-bar {
+            position: absolute;
+            bottom: 0;
+            width: 4px;
+            background: #4CAF50;
+            border-radius: 2px;
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+        
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+        
+        .success {
+            color: #4CAF50;
+        }
+        
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="captcha-container">
+        <div class="dog-icon">🐶</div>
+        <h2>Bark Verification</h2>
+        <p>Bark like a dog to prove you're not a robot!</p>
+        
+        <div class="visualizer" id="visualizer"></div>
+        
+        <button id="recordBtn">Start Barking</button>
+        <div class="status" id="status"></div>
+    </div>
+
+    <audio id="wobblyWigglySong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const recordBtn = document.getElementById('recordBtn');
+            const statusEl = document.getElementById('status');
+            const visualizer = document.getElementById('visualizer');
+            
+            // ADD THIS LINE TO GET THE AUDIO ELEMENT
+            const wobblyWigglySong = document.getElementById('wobblyWigglySong');
+
+            let audioContext;
+            let analyser;
+            let microphone;
+            let isRecording = false;
+            let barkDetected = false;
+            let animationId;
+            
+            // Create sound bars for visualization
+            for (let i = 0; i < 50; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'sound-bar';
+                bar.style.left = `${i * 5}px`;
+                bar.style.height = '0px';
+                visualizer.appendChild(bar);
+            }
+            const soundBars = document.querySelectorAll('.sound-bar');
+            
+            // Initialize audio context on user interaction
+            recordBtn.addEventListener('click', async function() {
+                if (!isRecording) {
+                    try {
+                        // Request microphone permission
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        
+                        // Set up audio context
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        analyser = audioContext.createAnalyser();
+                        analyser.fftSize = 256;
+                        
+                        microphone = audioContext.createMediaStreamSource(stream);
+                        microphone.connect(analyser);
+                        
+                        isRecording = true;
+                        recordBtn.textContent = 'Stop Recording';
+                        statusEl.textContent = 'Bark now!';
+                        statusEl.className = 'status';
+                        
+                        // Start visualization
+                        visualize();
+                        
+                        // Start analyzing for barks
+                        analyzeBark();
+                    } catch (error) {
+                        statusEl.textContent = `Error: ${error.message}`;
+                        statusEl.className = 'status error';
+                    }
+                } else {
+                    // Stop recording
+                    if (audioContext) {
+                        if (microphone) microphone.disconnect();
+                        if (audioContext.state !== 'closed') {
+                            await audioContext.close();
+                        }
+                    }
+                    
+                    isRecording = false;
+                    recordBtn.textContent = 'Start Barking';
+                    cancelAnimationFrame(animationId);
+                    
+                    if (!barkDetected) {
+                        statusEl.textContent = 'No bark detected. Try again!';
+                        statusEl.className = 'status error';
+                    }
+                }
+            });
+            
+            function visualize() {
+                animationId = requestAnimationFrame(visualize);
+                
+                if (!analyser) return;
+                
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+                
+                // Update visualization bars
+                for (let i = 0; i < soundBars.length; i++) {
+                    const index = Math.floor(i * bufferLength / soundBars.length);
+                    const value = dataArray[index] / 2;
+                    soundBars[i].style.height = `${value}px`;
+                    soundBars[i].style.backgroundColor = value > 40 ? '#f44336' : '#4CAF50';
+                }
+            }
+            
+            function analyzeBark() {
+                if (!isRecording || barkDetected) return; // Stop analyzing if bark is already found
+                
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+                
+                // Calculate average volume
+                let sum = 0;
+                for (let i = 0; i < bufferLength; i++) {
+                    sum += dataArray[i];
+                }
+                const average = sum / bufferLength;
+                
+                // Check for bark characteristics (simplified)
+                if (average > 80) { // Loud sound
+                    setTimeout(() => {
+                        analyser.getByteFrequencyData(dataArray);
+                        let newSum = 0;
+                        for (let i = 0; i < bufferLength; i++) {
+                            newSum += dataArray[i];
+                        }
+                        const newAverage = newSum / bufferLength;
+                        
+                        if (newAverage < 50) { // Quick drop after loud sound
+                            barkDetected = true;
+                            statusEl.textContent = 'Bark detected! Redirecting...';
+                            statusEl.className = 'status success';
+                            recordBtn.disabled = true;
+                            
+                            // ADD THIS LINE TO PLAY THE SONG BEFORE REDIRECTING
+                            wobblyWigglySong.play();
+
+                            // *** REDIRECT TO WEBSITE AFTER 1.5 SECONDS ***
+                            setTimeout(() => {
+                                window.location.href = "https://www.amazon.in/s?k=amazon+dog+toys&adgrpid=65654897247&ext_vrnc=hi&hvadid=590712376511&hvdev=c&hvlocphy=1007778&hvnetw=g&hvqmt=e&hvrand=12486013868387603759&hvtargid=kwd-331790972634&hydadcr=24568_2265461&mcid=fab07f0ae84c3773a4f657c11125b8a6&tag=googinhydr1-21&ref=pd_sl_2qqoxjh1es_e";
+                            }, 2500);
+                        }
+                    }, 200);
+                }
+                
+                // Continue analyzing if bark not found yet
+                if (!barkDetected) {
+                    setTimeout(analyzeBark, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
