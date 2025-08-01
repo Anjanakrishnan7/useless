@@ -15,7 +15,6 @@
             margin: 0;
         }
         
-        
         .captcha-container {
             background: white;
             padding: 30px;
@@ -83,17 +82,24 @@
         .error {
             color: #f44336;
         }
+        
+        .timer {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
     <div class="captcha-container">
         <div class="dog-icon">🐶</div>
         <h2>Bark Verification</h2>
-        <p>Bark like a dog to prove you're not a robot!</p>
+        <p>Bark like a dog to prove you're not a human!</p>
         
         <div class="visualizer" id="visualizer"></div>
         
         <button id="recordBtn">Start Barking</button>
+        <div class="timer" id="timer"></div>
         <div class="status" id="status"></div>
     </div>
 
@@ -103,9 +109,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             const recordBtn = document.getElementById('recordBtn');
             const statusEl = document.getElementById('status');
+            const timerEl = document.getElementById('timer');
             const visualizer = document.getElementById('visualizer');
             
-            // ADD THIS LINE TO GET THE AUDIO ELEMENT
             const wobblyWigglySong = document.getElementById('wobblyWigglySong');
 
             let audioContext;
@@ -114,6 +120,8 @@
             let isRecording = false;
             let barkDetected = false;
             let animationId;
+            let countdownTimer;
+            let timeLeft = 10;
             
             // Create sound bars for visualization
             for (let i = 0; i < 50; i++) {
@@ -141,9 +149,14 @@
                         microphone.connect(analyser);
                         
                         isRecording = true;
+                        barkDetected = false;
+                        timeLeft = 10;
                         recordBtn.textContent = 'Stop Recording';
                         statusEl.textContent = 'Bark now!';
                         statusEl.className = 'status';
+                        
+                        // Start countdown timer
+                        startCountdown();
                         
                         // Start visualization
                         visualize();
@@ -156,16 +169,7 @@
                     }
                 } else {
                     // Stop recording
-                    if (audioContext) {
-                        if (microphone) microphone.disconnect();
-                        if (audioContext.state !== 'closed') {
-                            await audioContext.close();
-                        }
-                    }
-                    
-                    isRecording = false;
-                    recordBtn.textContent = 'Start Barking';
-                    cancelAnimationFrame(animationId);
+                    stopRecording();
                     
                     if (!barkDetected) {
                         statusEl.textContent = 'No bark detected. Try again!';
@@ -173,6 +177,40 @@
                     }
                 }
             });
+            
+            function startCountdown() {
+                clearInterval(countdownTimer);
+                timerEl.textContent = `Time left: ${timeLeft} seconds`;
+                
+                countdownTimer = setInterval(() => {
+                    timeLeft--;
+                    timerEl.textContent = `Time left: ${timeLeft} seconds`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownTimer);
+                        if (!barkDetected) {
+                            statusEl.textContent = 'You must be a human! Try again.';
+                            statusEl.className = 'status error';
+                            stopRecording();
+                        }
+                    }
+                }, 1000);
+            }
+            
+            function stopRecording() {
+                isRecording = false;
+                recordBtn.textContent = 'Start Barking';
+                clearInterval(countdownTimer);
+                timerEl.textContent = '';
+                cancelAnimationFrame(animationId);
+                
+                if (audioContext) {
+                    if (microphone) microphone.disconnect();
+                    if (audioContext.state !== 'closed') {
+                        audioContext.close();
+                    }
+                }
+            }
             
             function visualize() {
                 animationId = requestAnimationFrame(visualize);
@@ -221,11 +259,10 @@
                             statusEl.textContent = 'Bark detected! Redirecting...';
                             statusEl.className = 'status success';
                             recordBtn.disabled = true;
+                            clearInterval(countdownTimer);
                             
-                            // ADD THIS LINE TO PLAY THE SONG BEFORE REDIRECTING
                             wobblyWigglySong.play();
 
-                            // *** REDIRECT TO WEBSITE AFTER 1.5 SECONDS ***
                             setTimeout(() => {
                                 window.location.href = "https://www.amazon.in/s?k=amazon+dog+toys&adgrpid=65654897247&ext_vrnc=hi&hvadid=590712376511&hvdev=c&hvlocphy=1007778&hvnetw=g&hvqmt=e&hvrand=12486013868387603759&hvtargid=kwd-331790972634&hydadcr=24568_2265461&mcid=fab07f0ae84c3773a4f657c11125b8a6&tag=googinhydr1-21&ref=pd_sl_2qqoxjh1es_e";
                             }, 2500);
