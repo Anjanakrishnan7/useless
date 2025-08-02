@@ -40,13 +40,13 @@ git clone "https://spontaneous-toffee-e023e8.netlify.app/"
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1]("Screenshot 2025-08-02 082541.png")
+!["Screenshot 2025-08-02 082541.png"]()
 main page that allows for the user to enter their details.
 
-![Screenshot2]("Screenshot 2025-08-02 082716.png")
+!["Screenshot 2025-08-02 082716.png"]()
 a special captcha that only returns success if the user can produce the sound of a dog.
 
-![Screenshot3]("Screenshot 2025-08-02 083148.png")
+!["Screenshot 2025-08-02 083148.png"]()
 an immersive interface that shows all the best partner for the user.
 
 # Diagrams
