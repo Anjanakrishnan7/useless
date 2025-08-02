@@ -5,40 +5,33 @@
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: ["zeraphim"]
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: [Sharon Shaju Augustine] - [St.Josephs Devagiri]
+- Member 2: [Anjanakrishnan A] - [St.Josephs Devagiri]
 
 ### Project Description
-[2-3 lines about what your project does]
+['Dating site for Dogs' with special validation technique & finding them the best partner.]
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+[dating issue for dogs]
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+[dating site for dogs,Because love shouldn’t be on a leash. Let your dog choose! ]
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- [HTML5, CSS3, JavaScript (ES6+),Web Audio API, MediaDevices API]
+- [VS Code	, Git]
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+git clone "https://spontaneous-toffee-e023e8.netlify.app/"
 
 # Run
 [commands]
@@ -47,14 +40,14 @@ For Software:
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot1]("Screenshot 2025-08-02 082541.png")
+main page that allows for the user to enter their details.
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2]("Screenshot 2025-08-02 082716.png")
+a special captcha that only returns success if the user can produce the sound of a dog.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot3]("Screenshot 2025-08-02 083148.png")
+an immersive interface that shows all the best partner for the user.
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
@@ -81,16 +74,15 @@ For Hardware:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
+[(https://drive.google.com/file/d/1GxRq6YIwmCphGM5Pg9oHam7O4V0HBzws/view?usp=sharing)]
+the user enter the data in the first page and after submit the captcha is shown and the user has to produce an authentic sound of a dog ,after the verification becomes a success,all the suitable partners are displayed from which the user can select the prefered partners to meet...
 
 # Additional Demos
 [Add any extra demo materials/links]
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- [Sharon Shaju Augustine]: [Specific contributions]
+- [Anjanakrishnan A]: [Specific contributions]
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
