@@ -11,7 +11,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
             margin: 0;
         }
         
@@ -25,10 +25,22 @@
             width: 100%;
         }
         
-        .dog-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: #ff9800;
+        .dog-image-container {
+            width: 170px; /* 100px + 3px border on each side */
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            border: 3px solid #000000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .dog-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .visualizer {
@@ -92,7 +104,10 @@
 </head>
 <body>
     <div class="captcha-container">
-        <div class="dog-icon">🐶</div>
+        <!-- Image container with centered image -->
+        <div class="dog-image-container">
+            <img src="C:\Users\ADMIN\Desktop\useless\Screenshot 2025-08-02 020510.png" alt="Dog" class="dog-image">
+        </div>
         <h2>Bark Verification</h2>
         <p>Bark like a dog to prove you're not a human!</p>
         
@@ -164,16 +179,16 @@
                         // Start analyzing for barks
                         analyzeBark();
                     } catch (error) {
-                        statusEl.textContent = `Error: ${error.message}`;
-                        statusEl.className = 'status error';
+                        statusEl.textContent = `Pawthentication Error: ${error.message}`;
+                        statusEl.className = 'Pawthentication error';
                     }
                 } else {
                     // Stop recording
                     stopRecording();
                     
                     if (!barkDetected) {
-                        statusEl.textContent = 'No bark detected. Try again!';
-                        statusEl.className = 'status error';
+                        statusEl.textContent = 'No bark detected. Pawthenticate again!';
+                        statusEl.className = 'Pawthentication error';
                     }
                 }
             });
@@ -189,8 +204,8 @@
                     if (timeLeft <= 0) {
                         clearInterval(countdownTimer);
                         if (!barkDetected) {
-                            statusEl.textContent = 'You must be a human! Try again.';
-                            statusEl.className = 'status error';
+                            statusEl.textContent = 'You must be a human! Pawthenticate again.';
+                            statusEl.className = 'Pawthentication error';
                             stopRecording();
                         }
                     }
@@ -256,15 +271,15 @@
                         
                         if (newAverage < 50) { // Quick drop after loud sound
                             barkDetected = true;
-                            statusEl.textContent = 'Bark detected! Redirecting...';
-                            statusEl.className = 'status success';
+                            statusEl.textContent = 'Bark detected! Pawthentication successfull...';
+                            statusEl.className = 'Pawthentication successfull';
                             recordBtn.disabled = true;
                             clearInterval(countdownTimer);
                             
                             wobblyWigglySong.play();
 
                             setTimeout(() => {
-                                window.location.href = "https://www.amazon.in/s?k=amazon+dog+toys&adgrpid=65654897247&ext_vrnc=hi&hvadid=590712376511&hvdev=c&hvlocphy=1007778&hvnetw=g&hvqmt=e&hvrand=12486013868387603759&hvtargid=kwd-331790972634&hydadcr=24568_2265461&mcid=fab07f0ae84c3773a4f657c11125b8a6&tag=googinhydr1-21&ref=pd_sl_2qqoxjh1es_e";
+                                window.location.href = "public.html";
                             }, 2500);
                         }
                     }, 200);

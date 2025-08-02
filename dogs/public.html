@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawMatch - Your Perfect Dog Matches</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff512f, #dd2476);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: #fff;
+        }
+
+        .profile-summary {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 3px dashed #ff9a9e;
+        }
+
+        .profile-summary h2 {
+            color: #ff512f;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff9a9e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #ff512f;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .matches-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 3px dashed #fad0c4;
+        }
+
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .match-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .match-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: #ff9a9e;
+        }
+
+        .match-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ff512f, #dd2476);
+        }
+
+        .match-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .match-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-right: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .match-info h3 {
+            color: #ff512f;
+            margin-bottom: 5px;
+            font-size: 1.4rem;
+        }
+
+        .match-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .compatibility {
+            background: linear-gradient(to right, #4caf50, #8bc34a);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .match-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .match-detail {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .match-detail:hover {
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .match-detail .label {
+            font-size: 0.8rem;
+            color: #ff512f;
+            font-weight: bold;
+        }
+
+        .match-detail .value {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .match-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-like {
+            background: linear-gradient(to right, #4caf50, #8bc34a);
+            color: white;
+        }
+
+        .btn-pass {
+            background: linear-gradient(to right, #f44336, #ff7043);
+            color: white;
+        }
+
+        .btn-super {
+            background: linear-gradient(to right, #2196f3, #64b5f6);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px 30px;
+            border: 2px solid white;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            text-decoration: none;
+            display: inline-block;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: #ff512f;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 50px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loading-dots {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .loading-dots span {
+            width: 15px;
+            height: 15px;
+            margin: 0 5px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { 
+                transform: scale(0);
+            } 40% { 
+                transform: scale(1.0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .matches-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .match-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Floating paw prints background */
+        .paw-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .paw {
+            position: absolute;
+            font-size: 20px;
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating paw prints background -->
+    <div class="paw-bg" id="pawBg"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🐾 Woof! Perfect Matches Found! 🐾</h1>
+            <p>These pups can't wait to meet your furry friend!</p>
+        </div>
+
+        <a href="date.html" class="back-btn">← Back to Profile</a>
+
+        <div class="profile-summary" id="profileSummary">
+            <!-- Profile summary will be populated by JavaScript -->
+        </div>
+
+        <div class="matches-section">
+            <h2 style="text-align: center; color: #ff512f; margin-bottom: 20px; font-size: 2rem;">
+                🐶 Your Top Dog Matches 🐶
+            </h2>
+            
+            <div class="loading" id="loading">
+                Sniffing out perfect companions...
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="matches-grid" id="matchesGrid" style="display: none;">
+                <!-- Matches will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden audio element for background music -->
+    <audio id="bgMusic" loop style="display: none;">
+        <!-- Replace with your actual file path -->
+        <source src="who_let_the_dogs_out.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Create floating paw prints
+        function createPawPrints() {
+            const pawBg = document.getElementById('pawBg');
+            const pawCount = 20;
+            
+            for (let i = 0; i < pawCount; i++) {
+                const paw = document.createElement('div');
+                paw.className = 'paw';
+                paw.innerHTML = '🐾';
+                paw.style.left = `${Math.random() * 100}%`;
+                paw.style.top = `${Math.random() * 100}%`;
+                paw.style.animationDuration = `${15 + Math.random() * 15}s`;
+                paw.style.animationDelay = `${Math.random() * 5}s`;
+                pawBg.appendChild(paw);
+            }
+        }
+
+        // Sample dog profiles for matches
+        const sampleDogs = [
+            {
+                name: "Bella",
+                gender: "female",
+                age: 3,
+                breed: "Golden Retriever",
+                weight: 28,
+                height: 58,
+                energy: "high",
+                activities: ["fetch", "swimming", "playing"],
+                personality: ["friendly", "playful", "social"],
+                location: "New York, USA",
+                bio: "I love making new friends and playing in the park! Looking for an adventure buddy! 🎾",
+                emoji: "🐕‍🦺"
+            },
+            {
+                name: "Max",
+                gender: "male",
+                age: 4,
+                breed: "Labrador",
+                weight: 32,
+                height: 62,
+                energy: "medium",
+                activities: ["hiking", "swimming", "cuddling"],
+                personality: ["calm", "friendly", "protective"],
+                location: "California, USA",
+                bio: "Gentle giant who loves long walks and cozy evenings. Perfect gentleman! 🎩",
+                emoji: "🦮"
+            },
+            {
+                name: "Luna",
+                gender: "female",
+                age: 2,
+                breed: "Husky",
+                weight: 24,
+                height: 55,
+                energy: "very-high",
+                activities: ["hiking", "playing", "fetch"],
+                personality: ["playful", "independent", "social"],
+                location: "Colorado, USA",
+                bio: "Adventure seeker with beautiful eyes! Ready for mountain hikes and snow adventures! ❄️",
+                emoji: "🐺"
+            },
+            {
+                name: "Charlie",
+                gender: "male",
+                age: 5,
+                breed: "Beagle",
+                weight: 18,
+                height: 38,
+                energy: "medium",
+                activities: ["walking", "cuddling", "playing"],
+                personality: ["friendly", "calm", "social"],
+                location: "Texas, USA",
+                bio: "Sweet and gentle soul who loves treats and belly rubs. Great with kids! 🍖",
+                emoji: "🐶"
+            }
+        ];
+
+        // Music autoplay with user interaction requirement
+        function enableMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            
+            // Set music to loop and lower volume
+            bgMusic.volume = 0.3;
+            
+            // Try to play music (will only work after user interaction)
+            function playMusic() {
+                bgMusic.play().catch(e => console.log("Audio play prevented:", e));
+            }
+            
+            // Attempt to play when user clicks anywhere
+            document.addEventListener('click', function musicStarter() {
+                playMusic();
+                document.removeEventListener('click', musicStarter);
+            }, { once: true });
+            
+            // Also try to play when page loads (may not work in all browsers)
+            playMusic();
+        }
+
+        function calculateCompatibility(userDog, matchDog) {
+            let score = 0;
+            
+            // Age compatibility (closer ages = higher score)
+            const ageDiff = Math.abs(userDog.age - matchDog.age);
+            if (ageDiff <= 1) score += 25;
+            else if (ageDiff <= 2) score += 20;
+            else if (ageDiff <= 3) score += 15;
+            
+            // Energy level compatibility
+            const energyLevels = ["low", "medium", "high", "very-high"];
+            const userEnergyIndex = energyLevels.indexOf(userDog.energy);
+            const matchEnergyIndex = energyLevels.indexOf(matchDog.energy);
+            const energyDiff = Math.abs(userEnergyIndex - matchEnergyIndex);
+            
+            if (energyDiff === 0) score += 30;
+            else if (energyDiff === 1) score += 20;
+            else if (energyDiff === 2) score += 10;
+            
+            // Size compatibility
+            const sizeDiff = Math.abs(userDog.weight - matchDog.weight);
+            if (sizeDiff <= 5) score += 20;
+            else if (sizeDiff <= 10) score += 15;
+            else if (sizeDiff <= 20) score += 10;
+            
+            // Ensure score is between 50-99 for good matches
+            return Math.min(Math.max(score, 50), 99);
+        }
+
+        function displayProfile() {
+            // Default profile if none exists
+            const defaultProfile = {
+                dogName: "Buddy",
+                gender: "male",
+                age: 4,
+                breed: "Golden Retriever",
+                weight: 30,
+                height: 60,
+                energy: "high",
+                activities: ["fetch", "swimming", "playing"],
+                personality: ["friendly", "playful", "social"],
+                bio: "I'm a happy dog looking for new friends to play with!"
+            };
+            
+            const dogProfile = JSON.parse(localStorage.getItem('dogProfile') || JSON.stringify(defaultProfile));
+            
+            document.getElementById('profileSummary').innerHTML = `
+                <h2>🐾 ${dogProfile.dogName}'s Profile</h2>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Gender</div>
+                        <div class="detail-value">${dogProfile.gender || 'Not specified'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Age</div>
+                        <div class="detail-value">${dogProfile.age || 'Not specified'} years</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Breed</div>
+                        <div class="detail-value">${dogProfile.breed || 'Not specified'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Weight</div>
+                        <div class="detail-value">${dogProfile.weight || 'Not specified'} kg</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Height</div>
+                        <div class="detail-value">${dogProfile.height || 'Not specified'} cm</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Energy Level</div>
+                        <div class="detail-value">${dogProfile.energy || 'Not specified'}</div>
+                    </div>
+                </div>
+                ${dogProfile.bio ? `<div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #ff9a9e;"><strong>Bio:</strong> ${dogProfile.bio}</div>` : ''}
+            `;
+            
+            return dogProfile;
+        }
+
+        function displayMatches() {
+            const dogProfile = displayProfile();
+            
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('matchesGrid').style.display = 'grid';
+
+                // Calculate compatibility and sort matches
+                const matches = sampleDogs
+                    .map(dog => ({
+                        ...dog,
+                        compatibility: calculateCompatibility(dogProfile, dog)
+                    }))
+                    .sort((a, b) => b.compatibility - a.compatibility);
+
+                const matchesHTML = matches.map(dog => `
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div class="match-avatar">${dog.emoji}</div>
+                            <div class="match-info">
+                                <h3>${dog.name}</h3>
+                                <p>${dog.breed} • ${dog.age} years old</p>
+                            </div>
+                        </div>
+                        
+                        <div class="compatibility">${dog.compatibility}% Match</div>
+                        
+                        <div class="match-details">
+                            <div class="match-detail">
+                                <div class="label">Weight</div>
+                                <div class="value">${dog.weight} kg</div>
+                            </div>
+                            <div class="match-detail">
+                                <div class="label">Height</div>
+                                <div class="value">${dog.height} cm</div>
+                            </div>
+                            <div class="match-detail">
+                                <div class="label">Energy</div>
+                                <div class="value">${dog.energy}</div>
+                            </div>
+                            <div class="match-detail">
+                                <div class="label">Location</div>
+                                <div class="value">${dog.location}</div>
+                            </div>
+                        </div>
+                        
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">${dog.bio}</p>
+                        
+                        <div class="match-actions">
+                            <button class="btn btn-pass" onclick="handleAction('pass', '${dog.name}')">👎 Pass</button>
+                            <button class="btn btn-like" onclick="handleAction('like', '${dog.name}')">👍 Like</button>
+                            <button class="btn btn-super" onclick="handleAction('super', '${dog.name}')">💖 Super</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('matchesGrid').innerHTML = matchesHTML;
+            }, 2000);
+        }
+
+        function handleAction(action, dogName) {
+            let message = '';
+            switch(action) {
+                case 'like':
+                    message = `You liked ${dogName}! They'll be notified! 🐾`;
+                    break;
+                case 'super':
+                    message = `Wow! You super-liked ${dogName}! They're really special! 💖`;
+                    break;
+                case 'pass':
+                    message = `You passed on ${dogName}. More pups to explore! 🐶`;
+                    break;
+            }
+            
+            // Create a cute notification
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.backgroundColor = action === 'pass' ? '#f44336' : 
+                                              action === 'super' ? '#2196f3' : '#4caf50';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '30px';
+            notification.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '1000';
+            notification.style.animation = 'fadeIn 0.5s ease';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+
+        // Initialize the page
+        createPawPrints();
+        displayMatches();
+        enableMusic();
+    </script>
+</body>
+</html>

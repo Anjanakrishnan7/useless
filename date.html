@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawMatch - Dog Dating App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: #e9ecef;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .verify-btn:active {
+            transform: translateY(0);
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐕 PawMatch 🐕</h1>
+            <p>tell us about yourself!</p>
+        </div>
+
+        <div class="form-container">
+            <form id="dogDatingForm">
+                <div class="form-group">
+                    <label for="dogName"><span class="emoji">🐾</span>Name</label>
+                    <input type="text" id="dogName" name="dogName" required placeholder="Enter your name">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gender"><span class="emoji">♂️♀️</span>Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age"><span class="emoji">🎂</span>Age (years)</label>
+                        <input type="number" id="age" name="age" min="0" max="20" required placeholder="Age in years">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="weight"><span class="emoji">⚖️</span>Weight (kg)</label>
+                        <input type="number" id="weight" name="weight" min="1" max="100" required placeholder="Weight in kg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="height"><span class="emoji">📏</span>Height (cm)</label>
+                        <input type="number" id="height" name="height" min="10" max="100" required placeholder="Height in cm">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="breed"><span class="emoji">🐕‍🦺</span>Breed</label>
+                    <select id="breed" name="breed" required>
+                        <option value="">Select your Breed</option>
+                        <option value="golden-retriever">Golden Retriever</option>
+                        <option value="labrador">Labrador</option>
+                        <option value="german-shepherd">German Shepherd</option>
+                        <option value="bulldog">Bulldog</option>
+                        <option value="beagle">Beagle</option>
+                        <option value="poodle">Poodle</option>
+                        <option value="husky">Husky</option>
+                        <option value="mixed">Mixed Breed</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="energy"><span class="emoji">⚡</span>Energy Level</label>
+                    <select id="energy" name="energy" required>
+                        <option value="">Select Energy Level</option>
+                        <option value="low">Low - Prefers napping</option>
+                        <option value="medium">Medium - Balanced</option>
+                        <option value="high">High - Always ready to play</option>
+                        <option value="very-high">Very High - Energizer bunny</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="emoji">🎾</span>Favorite Activities</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fetch" name="activities" value="fetch">
+                            <label for="fetch">Fetch</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="swimming" name="activities" value="swimming">
+                            <label for="swimming">Swimming</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="hiking" name="activities" value="hiking">
+                            <label for="hiking">Hiking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cuddling" name="activities" value="cuddling">
+                            <label for="cuddling">Cuddling</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="playing" name="activities" value="playing">
+                            <label for="playing">Playing</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="walking" name="activities" value="walking">
+                            <label for="walking">Walking</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="personality"><span class="emoji">😊</span>Personality Traits</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="friendly" name="personality" value="friendly">
+                            <label for="friendly">Friendly</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="playful" name="personality" value="playful">
+                            <label for="playful">Playful</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="calm" name="personality" value="calm">
+                            <label for="calm">Calm</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="protective" name="personality" value="protective">
+                            <label for="protective">Protective</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="social" name="personality" value="social">
+                            <label for="social">Social</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="independent" name="personality" value="independent">
+                            <label for="independent">Independent</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location"><span class="emoji">📍</span>Location</label>
+                    <input type="text" id="location" name="location" required placeholder="City, Country">
+                </div>
+
+                <div class="form-group">
+                    <label for="bio"><span class="emoji">📝</span>Tell us about yourself</label>
+                    <textarea id="bio" name="bio" rows="4" placeholder="Share something special about yourself"></textarea>
+                </div>
+
+                <button type="submit" class="verify-btn">
+                    🐾Pawthenticate🐾
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('dogDatingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const dogData = {};
+            
+            // Convert form data to object
+            for (let [key, value] of formData.entries()) {
+                if (dogData[key]) {
+                    if (Array.isArray(dogData[key])) {
+                        dogData[key].push(value);
+                    } else {
+                        dogData[key] = [dogData[key], value];
+                    }
+                } else {
+                    dogData[key] = value;
+                }
+            }
+            
+            // Store data in localStorage
+            localStorage.setItem('dogProfile', JSON.stringify(dogData));
+            
+            // Redirect to bawcha.html
+            window.location.href = 'bawcha.html';
+        });
+
+        // Add some interactive effects
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+                this.parentElement.style.transition = 'transform 0.3s ease';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
