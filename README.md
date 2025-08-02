@@ -16,7 +16,7 @@
 ['Dating site for Dogs' with special validation technique & finding them the best partner.]
 
 ### The Problem (that doesn't exist)
-[dating issue for dogs]
+[dating issue for dogs,dogs are not able to choose a mate of their preferances ,we give them an option for this...]
 
 ### The Solution (that nobody asked for)
 [dating site for dogs,Because love shouldn’t be on a leash. Let your dog choose! ]
